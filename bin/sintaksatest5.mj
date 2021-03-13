@@ -1,0 +1,21 @@
+program test
+	const int jedan = 1, dva = 2;
+	const char ch = 'a';
+	
+	int niz[];
+	char c;
+{
+	void main()	
+		int x,y;
+	{
+		x = 5;
+		x = x + 5;
+		y = x ? 7 : 5;
+		print(x);
+		niz = new int[4];
+		y = x * y +;
+		y---;
+		x = (y + 5;
+		
+	}
+}

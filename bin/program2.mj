@@ -1,0 +1,31 @@
+program test
+
+	const bool b1 = true, b2 = false;
+	const int jedan = 1, dva = 2;
+	
+	int niz[], x;
+	 
+{
+	void main()
+		int y, z; 
+	{
+	
+		x = dva * dva * dva;
+		y = b2 ? x * (x + x) : (b1 ? 5 * 5 : 11);
+		z = b1 ? x + x : y - x;
+	
+		niz = new int[3];
+		niz[0] = b1 ? (b1 ? (b2 ? z + dva : 1) : x + jedan) : y;
+		niz[jedan] = 5 * 6 / 3;
+		read(niz[dva]);
+	
+		print(x);
+		print(y);
+		print(z);
+		print(niz[0]);
+		print(niz[dva - jedan]);
+		print(niz[dva * jedan]);
+	
+	
+	}
+}

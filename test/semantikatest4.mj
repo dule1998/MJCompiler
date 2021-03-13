@@ -1,0 +1,29 @@
+program test
+	const int nula = 0, jedan = 1, dva = 2;
+	const char c = 'a';
+	const char c1 = 'b';
+	const char c2 = 'c';
+	
+	int x, y, z;
+	
+{
+	void main1() int n, m, k; 
+	{
+		read(n);
+		read(m);
+		read(k);
+		
+		x = n * k - m;
+		y = k * k + n;
+		y++;
+		
+		z = true ? (y * x) : 5;
+	
+		print(c);
+		print(c1);
+		print(c2);
+	
+	}
+
+
+}

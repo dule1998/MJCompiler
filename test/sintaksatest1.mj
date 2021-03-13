@@ -1,0 +1,23 @@
+program test
+	const int jedan, int dva;
+	const char = 'a';
+	
+	int niz[];
+	char c;
+{
+	void main()	
+		int x,y;
+	{
+		x = 5;
+		x = x++ + 5;
+		y = x ? 7 :;
+		print();
+		new int[4];
+		y = x * y +;
+		y---;
+		x = (y + 5;
+		
+	}
+}
+
+

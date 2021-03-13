@@ -1,0 +1,19 @@
+program test
+	int x = ';
+	int y = 0;
+{
+
+	void main() int niz[]; char c; {
+		x = ~5;
+		y = 7 + x;
+		
+		niz = 1;
+	
+	}
+
+
+
+
+
+
+}

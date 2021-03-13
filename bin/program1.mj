@@ -1,0 +1,72 @@
+// Test301
+
+program test301
+
+	const int nula = 0;
+	const int jedan = 1, dva = 2, tri = 3, cetiri = 4;
+	const int pet = 5, sest = 6;
+
+	int niz[], niz1[];
+	char nizch[], ch;
+{
+	void main()	
+		int var, sum;
+		bool bt;
+	{
+		var = 0;
+		var = var + sest * dva;
+		var--;
+		var = true ? var + 1 : var * tri;
+		var = var % 5 / 2;
+		var--;
+		print(var); 
+
+		sum = var;
+		bt = false;
+		sum = bt ? (var * cetiri / jedan - 1) : (bt ? -var : var);
+		sum++;
+		sum++;
+		sum = cetiri / 2 + (5 + pet) * tri - 1; 
+		print(sum + var);
+		
+		niz = new int[3];
+		niz[nula] = jedan + dva + tri % 3;
+		niz[niz[jedan + niz[0] - 3] + 1] = cetiri * dva;
+		bt = true;
+		niz[bt ? (bt ? (false ? niz[1] - niz[niz[1] - 8] : 2) : 2 * pet) : 1] = niz[1] * 3;
+		var = niz[2]/niz[0] + sum;
+		print(var);
+		print(niz[1]);
+		print(niz[0]); 
+		print(niz[2]);
+		
+		niz1 = niz;
+		print(niz1[0]);
+		print(niz1[1]);
+		print(niz1[2]);
+
+		
+		nizch = new char[3];
+		nizch[0] = '/';
+		ch = '4';
+		nizch[jedan] = '+';
+		nizch[pet - 3] = '(';
+		print(nizch[bt ? 0 : 1]);
+		print(nizch[false ? 0 : 1]);
+		print(nizch[jedan * 2]);
+		print(ch);
+			
+		
+		sum = var + (false ? sum : sum + sum) * var - (niz[1] % 2 + niz[2] * jedan - cetiri);
+		print(sum);
+			
+		read(niz[niz[1] - niz[1] + 1]);
+		bt = true;
+		
+		print(bt ? (false ? dva : niz[0]) : var + 10);
+		print(false ? var + 20 : sum + 30);
+		print(true ? '+' : '-');
+	}
+}
+
+

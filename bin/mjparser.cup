@@ -1,0 +1,259 @@
+
+
+package rs.ac.bg.etf.pp1;
+
+import java_cup.runtime.*;
+import org.apache.log4j.*;
+import rs.ac.bg.etf.pp1.ast.*;
+
+parser code {:
+
+	boolean errorDetected;
+
+	Logger log = Logger.getLogger(getClass());
+   
+   
+    // slede redefinisani metodi za prijavu gresaka radi izmene teksta poruke
+     
+    public void report_fatal_error(String message, Object info) throws java.lang.Exception {
+      done_parsing();
+      report_error(message, info);
+    }
+  
+    public void syntax_error(Symbol cur_token) {
+        report_error("\nSintaksna greska", cur_token);
+    }
+  
+    public void unrecovered_syntax_error(Symbol cur_token) throws java.lang.Exception {
+        report_fatal_error("Fatalna greska, parsiranje se ne moze nastaviti", cur_token);
+    }
+
+    public void report_error(String message, Object info) {
+    	errorDetected = true;
+    	StringBuilder msg = new StringBuilder(message); 
+    	if (info instanceof Symbol)
+            msg.append (" na liniji ").append(((Symbol)info).left);
+        log.error(msg.toString());
+    }
+
+
+:}
+
+init with {:
+	errorDetected = false;
+:}
+
+scan with {:
+	Symbol s = this.getScanner().next_token();
+	if (s != null && s.value != null) 
+		log.info(s.toString() + " " + s.value.toString());
+	return s;
+:}
+
+
+terminal PROG, LBRACE, RBRACE, SEMI, LPAREN, RPAREN;
+terminal LSQUAR, RSQUAR, COMMA, PRINT, RETURN, PLUS, READ, EQUAL, VOID;
+terminal MINUS, MUL, DIV, MOD, TER, DDOT, INC, DEC;
+terminal CLASS, CONST, NEW, BREAK, CONTINUE, SWITCH, CASE, DO, WHILE, IF, ELSE, ENUM, EXTENDS;
+terminal String CHARCONST;
+terminal String BOOLCONST;
+terminal Integer NUMCONST;
+terminal String IDENT;
+
+nonterminal VarDecl, DeclList, ErrorComma, GlbDeclFirst, SquareBrack;
+nonterminal StatementList, Statement, Addop, DesignatorStatement, Mulop;
+nonterminal ConstDecl, DesName;
+
+nonterminal GlobVarList, GlobVarDecl, GlobVarWithSquBr; 
+nonterminal VarDeclList, VarName, PrintList, Assignop;
+
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, Program, MethodDecl, MethodName;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj VarWithSquBrack, Designator;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Term, Factor, Expr, VarList, Cond, FirstExpr;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct NumConstList, CharConstList, BoolConstList, SecondExpr;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Expr1, ConstList, ErHndl, ExprDes, MinusTerm;
+
+Program ::= (Program) PROG ProgName:p DeclList LBRACE MethodDecl RBRACE;
+
+ProgName ::= (ProgName) IDENT:prName;
+
+DeclList ::= (ConstDeclarations) DeclList ConstDecl
+			|
+			(VarDeclarations) DeclList GlobVarDecl
+			|
+			(NoDecl) /* epsilon */
+			;
+
+ConstDecl ::= (ConstDecl) CONST Type:constType ConstList SEMI;
+
+ConstList ::= (NumConstDecList) NumConstList
+				|
+				(CharConstDecList) CharConstList
+				|
+				(BoolConstDecList) BoolConstList
+				;
+
+NumConstList ::= (NumConstDeclarations) NumConstList COMMA IDENT:constName Assignop NUMCONST
+				|
+				(NumConst) IDENT:constName Assignop NUMCONST:nConst
+				;
+
+CharConstList ::= (CharConstDeclarations) CharConstList COMMA IDENT:constName Assignop CHARCONST
+				|
+				(CharConst) IDENT:constName Assignop CHARCONST:cConst
+				;
+
+BoolConstList ::= (BoolConstDeclarations) BoolConstList COMMA IDENT:constName Assignop BOOLCONST
+				|
+				(BoolConst) IDENT:constName Assignop BOOLCONST:bConst
+				;
+
+GlobVarDecl ::= (GlbVarDeclarations) Type:varType GlbDeclFirst GlobVarList SEMI
+//			|
+//			(SemiError) error SEMI:s
+//			{: parser.report_error("Izvrsen oporavak do ; u liniji " + sleft, null);  :}
+			;
+
+GlbDeclFirst ::= (GlobalFirst) IDENT:varName SquareBrack
+			|
+			(SemiCommaError) error:s
+			{: parser.report_error("Izvrsen oporavak do ; odnosno , u liniji " + sleft + " (glob. prom.)", null);  :}
+			;
+
+VarDecl ::= (VarDecl) Type:varType VarWithSquBrack VarList SEMI;
+
+VarList ::= (VarLst) VarList COMMA VarWithSquBrack
+			|
+			(NoVarDeclList) /* epsilon */
+			;
+
+SquareBrack ::= (With) LSQUAR RSQUAR
+			|
+			(Without) /* epsilon */
+			;
+
+VarWithSquBrack ::= (VarWith) VarName LSQUAR RSQUAR
+				|
+				(VarWithout) VarName
+				;
+
+GlobVarWithSquBr ::= (GlobVarWith) VarName LSQUAR RSQUAR
+				|
+				(GlobVarWithout) VarName
+//				|
+//				(CommaError) error:c
+//				{: parser.report_error("Izvrsen oporavak do , u liniji " + cleft, null);  :}
+				;
+
+VarName ::= (VarName) IDENT:varName;
+
+GlobVarList ::= (GlobVarLst) GlobVarList COMMA GlobVarWithSquBr
+			|
+			(CommaError) GlobVarList COMMA ErrorComma
+			|
+			(GlVarDec) /* epsilon */
+			;
+
+ErrorComma ::= (ErrorComma) error:c {: parser.report_error("Izvrsen oporavak do ; odnosno , u liniji " + cleft + " (glob. prom.)", null);  :};
+
+VarDeclList ::= (VarDecls) VarDeclList VarDecl
+			|
+			(NoVarDecl) /* epsilon */
+			;
+
+Type ::= (Type) IDENT:typeName;
+
+MethodDecl ::= (MethodDecl) VOID MethodName LPAREN RPAREN VarDeclList LBRACE StatementList RBRACE;
+
+MethodName ::= (MethodName) IDENT:methName;
+
+StatementList ::= (Statements) StatementList Statement 
+				|
+				(NoStmt) /* epsilon */
+				;
+
+Statement ::= (DesignStmt) DesignatorStatement SEMI
+			|
+			(ReadStatement) READ LPAREN Designator RPAREN SEMI
+			|
+			(PrintStatement) PRINT LPAREN Expr PrintList RPAREN SEMI
+			;
+
+PrintList ::= (PrintParam) COMMA NUMCONST
+			|
+			(NoPrintParam) /* epsilon */
+			;
+
+DesignatorStatement ::= (DesEqu) Designator EQUAL Expr
+					|
+					(DesErr) Designator EQUAL ErHndl
+					|
+					(DesInc) Designator INC
+					|
+					(DesDec) Designator DEC
+					;
+
+ErHndl ::= (ErHndl) error:l {: parser.report_error("Izvrsen oporavak do ; u liniji " + lleft, null);  :};
+
+MinusTerm ::= (MinTerm) MINUS Term
+			|
+			(NoMinusTerm) Term
+			;
+
+Expr1 ::= (AddExpr) Expr1 Addop Term
+		|
+		(TermExpr) MinusTerm
+		;
+
+Expr ::= (Condition) Cond TER FirstExpr DDOT SecondExpr
+		|
+		(NoCondition) Expr1
+		;
+
+Cond ::= (Cond) Expr1;
+
+FirstExpr ::= (FirstExpr) Expr1;
+
+SecondExpr ::= (SecondExpr) Expr1;
+
+Term ::= (MulTerm) Term Mulop Factor
+		|
+		(TermFactor) Factor
+		;
+
+Factor ::= (DesignFactor) Designator
+		|
+		(NumConstFactor) NUMCONST
+		|
+		(CharConstFactor) CHARCONST
+		|
+		(BoolConstFactor) BOOLCONST
+		|
+		(ExprFact) LPAREN Expr RPAREN
+		|
+		(NewType) NEW Type:typeDef LSQUAR Expr RSQUAR
+		;
+
+Designator ::= (Designator) DesName ExprDes;
+
+DesName ::= (DesName) IDENT:name;
+
+ExprDes ::= (ExprDesignator) LSQUAR Expr RSQUAR
+			|
+			(NoSqu) /* epsilon */
+			;
+
+Addop ::= (Plus) PLUS
+		|
+		(Minus) MINUS
+		;
+
+Mulop ::= (Mul) MUL
+		|
+		(Div) DIV
+		|
+		(Mod) MOD
+		;
+
+Assignop ::= (Assignop) EQUAL;
+

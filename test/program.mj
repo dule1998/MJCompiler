@@ -1,0 +1,64 @@
+// Test301
+
+program test301
+
+	const int nula = 0;
+	const int jedan = 1, dva = 2, tri = 3, cetiri = 4;
+	const int pet = 5;
+
+	int niz[];
+	char nizch[];
+{
+	void main()	
+		int bodovi, sum;
+		bool bt;
+	{
+		bodovi = 0;
+		bodovi++;
+		bodovi = (bodovi + jedan) * dva * 3;
+		bodovi = bodovi % 5;
+		bodovi--;
+		print(bodovi); 
+
+		sum = 0;
+		bt = false;
+		sum = bt ? (cetiri / pet + 1) : (bt ? 7 : bodovi);
+		sum++;
+		sum++;
+		sum = cetiri / 2 + (5 + pet) * tri -1; 
+		print(sum);
+		
+		niz = new int[3];
+		niz[nula] = jedan + dva + tri % 3;
+		niz[niz[jedan + niz[0] - 3] + 1] = cetiri * dva;
+		bt = true;
+		niz[bt ? (bt ? (false ? niz[1] - niz[niz[1] - 8] : 2) : 2 * pet) : 1] = niz[1] * 3;
+		bodovi = niz[2]/niz[0];
+		print(bodovi);
+		print(niz[1]);
+		print(niz[0]); 
+		print(niz[2]);
+
+		
+		nizch = new char[3];
+		nizch[0] = 'a';
+		nizch[jedan] = 'b';
+		nizch[pet - 3] = 'c';
+		print(nizch[bt ? 0 : 1]);
+		print(nizch[false ? 0 : 1]);
+		print(nizch[jedan * 2]);
+			
+		
+		bodovi = bodovi + (pet * jedan - 1) * bodovi - (niz[2] % 2 + niz[0] * niz[1] - 3);
+		print(bodovi);
+			
+		read(niz[niz[1] - niz[1] + 1]);
+		bt = true;
+		
+		print(bt ? (false ? 7 : niz[1]) : bodovi + 10);
+		print(false ? bodovi + 20 : niz[2] + 30);
+		print(true ? '+' : '-');
+	}
+}
+
+

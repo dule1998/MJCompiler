@@ -1,0 +1,26 @@
+program test
+	int x,y,z;
+	bool,b1,b2,b3;
+{
+	void main()
+		char c1,c2;
+	{
+		c1 = 'b'
+		c2 = 'd'
+		
+		b1 = true;
+		b2 = false;
+		b3 = false;
+		
+		x = 0;
+		x++;
+		y = x + 5;
+		y = b3 ? 0 : y + 3;
+		
+		z = y;
+		z---;`
+	
+	}
+
+
+}

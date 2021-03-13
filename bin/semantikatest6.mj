@@ -1,0 +1,40 @@
+program test
+	const int jedan = 1, dva = 2, tri = 3;
+	const char cha = 'a';
+	
+	int niz[];
+	char nizch[];
+{
+	void main()	
+		int x,y,z;
+		bool b;
+	{
+		niz = new int[tri * dva];
+		niz[dva - dva] = dva * tri - 1;
+		x = true ? (false ? 5 : 4) : 3;
+		x++;
+		niz[niz[0] - 4] = b ? x : 9;
+		print(x);
+		read(niz[2]);
+		nizch = new char[3];
+		nizch[niz[2] - niz[2]] = 'b';
+		nizch[niz[2] - niz[2] + 1] = 'c';
+		nizch[niz[2]] = 'c';
+		print(nizch[0]);
+		print(nizch[1]);
+		print(nizch[2]);
+		y = x * x / 2;
+		y--;
+		b = true;
+		z = b ? (niz[0] + niz[0] * (niz[1] + niz[2]) + y - x) : 0;
+		print(z);
+		y--;
+		x = y + 5;
+		print(y);
+		print(x);
+		print(niz[0]);
+		print(niz[1]);
+		print(niz[2] + niz[1]);
+		
+	}
+}
